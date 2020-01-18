@@ -12,11 +12,11 @@ def get_company_options():
     return ticker_df.to_dict("rows")
 
 
-def plot_stocks(ticker_symbol):
+def plot_stocks(ticker_symbol, start_time, end_time):
     # df = get_alpha_stock_data(ticker_symbol)
-    df = get_yahoo_stock_data(ticker_symbol)
+    df = get_yahoo_stock_data(ticker_symbol, start_time, end_time)
     pxdf = flatten_df(df, ticker_symbol)
-    print(pxdf)
+    # print(pxdf)
     if not pxdf.empty:
         pxdf.reset_index(level=0, inplace=True)
         graph = px.line(pxdf, x='Date', y='Close', color='ticker')
@@ -58,14 +58,14 @@ def make_ticker_string(ticker_symbol):
     return ticker_symbol_str
 
 
-def get_yahoo_stock_data(ticker_symbol):
+def get_yahoo_stock_data(ticker_symbol, start_time, end_time):
     if not ticker_symbol:
         return pd.DataFrame()
     ticker_symbol_string = make_ticker_string(ticker_symbol)
     df = pd.DataFrame()
 
     try:
-        df = yf.download(ticker_symbol_string, start="2017-01-01", end="2017-04-30", group_by="ticker")
+        df = yf.download(ticker_symbol_string, start=start_time, end=end_time, group_by="ticker")
     except KeyError:
         print("Key Error Caught")
     return df
