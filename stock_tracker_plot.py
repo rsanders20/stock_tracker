@@ -3,10 +3,13 @@ import requests
 import pandas as pd
 import yfinance as yf
 import dash_bootstrap_components as dbc
+import os
+
 
 
 def get_company_options():
-    file_path = "/home/ryan/Desktop/dev/stock_tracker/dictionaries/sp500.csv"
+    dirpath = os.getcwd()
+    file_path = os.path.join(dirpath, "dictionaries","sp500.csv")
     ticker_df = pd.read_csv(file_path)
     ticker_df.columns = ['value', 'label']
     return ticker_df.to_dict("rows")
